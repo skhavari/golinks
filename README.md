@@ -3,6 +3,7 @@ simple go links server
 
 
 ### Quick Start
+For Chrome on Mac OS
 
 1. `cp golinks.sample.json golinks.json` or make your own
 1. `npm install` - install dependencies 
@@ -19,7 +20,7 @@ simple go links server
 1. `pm2 start server`
 1. `pm2 startup` then follow the directions
 1. `pm2 save`
-1. read pm2 docs for more info
+1. read [pm2 docs][pm2-docs] for more info
 
 
 ### Modify go links
