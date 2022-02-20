@@ -8,6 +8,9 @@ For Chrome on Mac OS
 1. `cp golinks.sample.json golinks.json` or make your own
 1. `npm install` - install dependencies 
 1. `node server` - run server on port 6060
+    1. `http://localhost:6060/go/<keywoard>` redirects to the link mapped to the given keyword
+    1. `http://localhost:6060/` shows all keyword to URL mappings
+    1. `http://localhost:6060/reload` will tell the server to reload the mapping file.  do this after making changes to the mapping file.
 1. [add a chome search engine][chrome-search-engine-settings].  See [help docs][chrome-search-engine-docs] for more info
     1. Set name to `go`
     1. Set keyword to `go`
