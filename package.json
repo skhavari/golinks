@@ -1,0 +1,20 @@
+{
+    "name": "golinks",
+    "version": "1.0.0",
+    "description": "Simple golinks server",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "keywords": [
+        "golinks",
+        "url shortener"
+    ],
+    "author": "Sam Khavari <skhavari@cs.stanford.edu>",
+    "license": "NONE",
+    "dependencies": {
+        "express": "^4.17.3",
+        "json2html": "^0.0.8"
+    }
+}
