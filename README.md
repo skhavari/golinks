@@ -25,10 +25,10 @@ For Chrome on Mac OS
 
 ### Modify go links
 1. modify `golinks.json`
-1. force a reload of the configuration file by navigating to [https://localhost:6060/reload][reload-url]
+1. force a reload of the configuration file by navigating to [http://localhost:6060/reload][reload-url]
 
 
 [chrome-search-engine-settings]: chrome://settings/searchEngines
 [chrome-search-engine-docs]: https://support.google.com/chrome/answer/95426?hl=en&co=GENIE.Platform%3DDesktop
 [pm2-docs]: https://pm2.keymetrics.io/docs/usage/pm2-doc-single-page/
-[reload-url]: https://localhost:6060/reload
+[reload-url]: http://localhost:6060/reload
