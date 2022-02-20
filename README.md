@@ -1,5 +1,5 @@
 # golinks
-simple go links server
+Simple go links server.  There are fewer LOC than lines in this doc.
 
 
 ### Quick Start
