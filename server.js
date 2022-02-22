@@ -1,26 +1,33 @@
-const fs = require('fs');
-const json2html = require('json2html');
+const airtable = require('./airtable');
 const express = require('express');
-const res = require('express/lib/response');
+const morgan = require('morgan');
 const app = express();
 
-const loadMap = () => new Map(JSON.parse(fs.readFileSync('./golinks.json')));
-let map = loadMap();
+app.use(morgan(':method :url :status :res[location] :res[content-length] - :response-time ms'));
 
-app.get('/go/:key', (request, response) =>
-    response.redirect(map.get(request.params.key) || 'https://www.pixar.com/404')
-);
+let golinks = new Map();
 
-app.get('/reload', (request, response) => {
-    map = loadMap();
+app.get('/go/:key', (request, response) => {
+    const builtIns = new Map([
+        ['go', '/'],
+        ['reload', '/reload'],
+    ]);
+    const key = request.params.key;
+    response.redirect(builtIns.get(key) || golinks.get(key) || 'https://www.pixar.com/404');
+});
+
+app.get('/reload', async (_, response) => {
+    golinks = await airtable.loadLinks();
     response.redirect('/');
 });
 
-app.get('/', (request, response) => {
-    response.writeHead(200, { 'Content-Type': 'text/html' });
-    response.end(json2html.render(Object.fromEntries(map)));
-});
+app.get('/', (_, response) => response.redirect(airtable.baseUrl));
 
-app.listen(6060, () => {
-    console.log('Listen on the port 6060...');
-});
+const main = async () => {
+    golinks = await airtable.loadLinks();
+    app.listen(6060, async () => {
+        console.log('Listen on the port 6060...');
+    });
+};
+
+main().catch(console.error);

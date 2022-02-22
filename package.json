@@ -1,20 +1,21 @@
 {
     "name": "golinks",
     "version": "1.0.0",
-    "description": "Simple golinks server",
+    "description": "Simple golinks server backed by airtable base",
     "main": "server.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node server.js"
     },
     "keywords": [
         "golinks",
-        "url shortener"
+        "url shortener",
+        "airtable"
     ],
     "author": "Sam Khavari <skhavari@cs.stanford.edu>",
     "license": "NONE",
     "dependencies": {
+        "airtable": "^0.11.2",
         "express": "^4.17.3",
-        "json2html": "^0.0.8"
+        "morgan": "^1.10.0"
     }
 }

@@ -1,0 +1,8 @@
+{
+    "endpointUrl": "https://api.airtable.com",
+    "apiKey": "airtable api key",
+    "base": "airtable base name",
+    "table": "airtable table name",
+    "keyCol": "name of column that contains keys",
+    "urlCol": "name of column that contains urls"
+}
