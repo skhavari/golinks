@@ -10,19 +10,19 @@ const URL = config.urlCol;
 
 let table = base(config.table);
 
-let loadLinks = async () =>
-    new Promise((resolve, reject) => {
-        let map = new Map();
+const loadLinksHandler = (resolve, reject) => {
+    let map = new Map();
+    const processPage = (records, fetchNextPage) => {
+        records.forEach((r) => map.set(r.get(KEY).trim(), r.get(URL).trim()));
+        fetchNextPage();
+    };
 
-        const processPage = (records, fetchNextPage) => {
-            records.forEach((r) => map.set(r.get(KEY).trim(), r.get(URL).trim()));
-            fetchNextPage();
-        };
+    const done = (err) => (err ? reject(err) : resolve(map));
 
-        const done = (err) => (err ? reject(err) : resolve(map));
+    table.select().eachPage(processPage, done);
+};
 
-        table.select().eachPage(processPage, done);
-    });
+const loadLinks = async () => new Promise(loadLinksHandler);
 
 const baseUrl = `https://airtable.com/${config.base}`;
 
