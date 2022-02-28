@@ -12,8 +12,13 @@ app.get('/go/:key', (request, response) => {
         ['go', '/'],
         ['reload', '/reload'],
     ]);
-    const key = request.params.key;
-    response.redirect(builtIns.get(key) || golinks.get(key) || 'https://www.pixar.com/404');
+    let [key, ...replace] = request.params.key.split(' ');
+    const redirectUrl = (
+        builtIns.get(key) ||
+        golinks.get(key) ||
+        'https://www.pixar.com/404'
+    ).replace('%s', replace.join(' ').trim());
+    response.redirect(redirectUrl);
 });
 
 app.get('/reload', async (_, response) => {

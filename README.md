@@ -39,6 +39,12 @@ For Chrome on Mac OS
 1. force a reload of the data by navigating to [http://localhost:6060/reload][reload-url]
 
 
+### Parameterized Links
+1. you can define golinks for search engines
+1. eg, suppose you define key=`g` and url=`https://www.google.com/search?q=%s`
+1. in your browser, when you type `g purple onions` you will navigate to `https://www.google.com/search?q=purple%20onions`
+
+
 [airtable-sample]: https://airtable.com/shrZOvefftUFNSZur
 [chrome-search-engine-settings]: chrome://settings/searchEngines
 [chrome-search-engine-docs]: https://support.google.com/chrome/answer/95426?hl=en&co=GENIE.Platform%3DDesktop
