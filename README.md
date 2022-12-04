@@ -15,6 +15,11 @@ For Chrome on Mac OS
     1. Set name to `go`
     1. Set keyword to `go`
     1. Set URL to `http://localhost:6060/go/%s`
+1. an alternative to the previous step is to use the browser extension in the `extension` folder
+    1. open your browser and go to its extension settings
+    1. enable developer mode
+    1. load unpacked
+    1. select the extension folder
 1. open your browser and type `go <space>` then `<key>` and you should redirect to the url that maps to the given key
 
 
