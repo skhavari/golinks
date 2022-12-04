@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "priority": 1,
+        "action": {
+            "type": "redirect",
+            "redirect": {
+                "regexSubstitution": "http://localhost:6060/go/\\1"
+            }
+        },
+        "condition": {
+            "regexFilter": "^http[s]?://go/(.*)",
+            "resourceTypes": ["main_frame"]
+        }
+    },
+    {
+        "id": 2,
+        "priority": 1,
+        "action": {
+            "type": "redirect",
+            "redirect": {
+                "regexSubstitution": "http://localhost:6060/go/\\1"
+            }
+        },
+        "condition": {
+            "regexFilter": "https\\:\\/\\/www\\.google\\.com\\/search\\?q=go\\+([^&]+)\\&.*",
+            "resourceTypes": ["main_frame"]
+        }
+    }
+]
