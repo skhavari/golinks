@@ -57,8 +57,8 @@ class State {
 app.get('/go/:shortCode', (request, response) => {
     let golinks = State.getInstance().golinks;
 
-    let [shortCode, ...replace] = decodeURIComponent(request.params.shortCode.replace(/\+/g, ' ')).split(' ');
-    replace = replace.join(' ').trim();
+    let [shortCode, ...replace] = decodeURIComponent(request.params.shortCode.replace(/\+/g, '%20')).split(' ');
+    replace = replace.map(encodeURIComponent).join('+').trim();
 
     let redirectUrl = 'https://www.pixar.com/404';
     if (golinks.has(shortCode)) {
