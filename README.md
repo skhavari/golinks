@@ -25,7 +25,7 @@ For Chrome on Mac OS
 
 ### Run in background & at startup (Mac OS)
 1. `npm install -g pm2`
-1. `pm2 start server`
+1. `pm2 start golink.config.js --env prod`
 1. `pm2 startup` then follow the directions
 1. `pm2 save`
 1. read [pm2 docs][pm2-docs] for more info
