@@ -1,6 +1,6 @@
 {
     "name": "golinks",
-    "version": "2.2.0",
+    "version": "3.0.0",
     "description": "Simple golinks server backed by airtable base",
     "main": "server.js",
     "scripts": {
@@ -16,6 +16,7 @@
     "dependencies": {
         "airtable": "^0.11.2",
         "express": "^4.17.3",
-        "morgan": "^1.10.0"
+        "morgan": "^1.10.0",
+        "tx2": "^1.0.5"
     }
 }

@@ -1,54 +1,112 @@
 const airtable = require('./airtable');
 const express = require('express');
 const morgan = require('morgan');
+const tx2 = require('tx2');
 const app = express();
 
 app.use(morgan(':method :url :status :res[location] :res[content-length] - :response-time ms'));
 app.set('json spaces', 4);
 
-let port = process.env.NODE_ENV === 'production' ? 6060 : 9090;
+/********************************************************************************
+ *
+ * State
+ *
+ */
 
-let golinks = new Map();
-let reverse = new Map();
+class State {
+    static #internalConstruction = false;
+    static #instance = null;
 
-let loadLinks = async () => {
-    golinks = await airtable.loadLinks();
-    for (let [key, url] of golinks.entries()) {
-        let list = reverse.get(url) || [];
-        list.push(key);
-        reverse.set(url, list);
+    golinks = new Map();
+
+    constructor() {
+        if (!State.#internalConstruction) {
+            throw new TypeError('State is not constructable, use State.getInstance');
+        }
     }
-};
 
-app.get('/go/:key', (request, response) => {
-    const builtIns = new Map([
-        ['go', '/'],
-        ['reload', '/reload'],
-    ]);
-    let [key, ...replace] = request.params.key.split(' ');
-    const redirectUrl = (builtIns.get(key) || golinks.get(key) || 'https://www.pixar.com/404').replace(
-        '%s',
-        replace.join(' ').trim()
-    );
+    static getInstance() {
+        if (State.#instance === null) {
+            State.#internalConstruction = true;
+            State.#instance = new State();
+            State.#internalConstruction = false;
+        }
+        return State.#instance;
+    }
+
+    async reload() {
+        this.golinks = await airtable.loadLinks();
+
+        // add builtins...
+        this.golinks.set('go', '/');
+        this.golinks.set('reload', '/reload');
+        this.golinks.set('list', '/list');
+    }
+
+    asEntries() {
+        return [...this.golinks.entries()];
+    }
+}
+
+/********************************************************************************
+ *
+ * Request Handlers
+ *
+ */
+
+app.get('/go/:shortCode', (request, response) => {
+    let golinks = State.getInstance().golinks;
+
+    let [shortCode, ...replace] = decodeURIComponent(request.params.shortCode.replace(/\+/g, ' ')).split(' ');
+    replace = replace.join(' ').trim();
+
+    let redirectUrl = 'https://www.pixar.com/404';
+    if (golinks.has(shortCode)) {
+        redirectUrl = golinks.get(shortCode).replace('%s', replace);
+    }
+
     response.redirect(redirectUrl);
+    redircts.inc();
+    if (!golinks.has(shortCode)) {
+        notFound.inc();
+    }
 });
 
 app.get('/reload', async (_, response) => {
-    await loadLinks();
-    response.redirect('/');
+    await State.getInstance().reload();
+    response.redirect('/list');
 });
 
-app.get('/', (_, response) => response.redirect(airtable.baseUrl));
+app.get('/', (_, response, xx) => response.redirect(airtable.baseUrl));
+app.get('/list', (_, response) => response.json(State.getInstance().asEntries()));
 
-app.get('/list', (_, response) => {
-    response.json({ golinks: [...golinks.entries()], reverse: [...reverse.entries()] });
+/********************************************************************************
+ *
+ * PM2 Metrics and Actions
+ *
+ */
+
+let redircts = tx2.counter('GoLinks Redirects');
+let notFound = tx2.counter('GoLinks NotFounds');
+
+tx2.action('reload', async (reply) => {
+    await State.getInstance().reload();
+    reply(State.getInstance().asEntries());
 });
+
+tx2.action('list', (reply) => reply(State.getInstance().asEntries()));
+
+/********************************************************************************
+ *
+ * Main
+ *
+ */
+
+const PORT = process.env.NODE_ENV === 'production' ? 6060 : 9090;
 
 const main = async () => {
-    await loadLinks();
-    app.listen(port, async () => {
-        console.log(`golinks server running on port ${port}`);
-    });
+    await State.getInstance().reload();
+    app.listen(PORT, async () => console.log(`listening on port ${PORT}`));
 };
 
 main().catch(console.error);
