@@ -4,12 +4,12 @@ Simple go links server backed by airtable base.
 ### Quick Start
 For Chrome on Mac OS
 
-1. create a [table in airtable][airtable-sample] with 1 column for key names and 1 column for urls
+1. create a [table in airtable][airtable-sample] with 1 column for short codes and 1 column for urls
 1. `cp airtable.sample.config.json airtable.config.json` and update
 1. `npm install` - install dependencies 
 1. `node server` - run server on port 6060
-    1. `http://localhost:6060/go/<key>` redirects to the link mapped to the given key
-    1. `http://localhost:6060/` shows all keyword to URL mappings (opens your airtable base)
+    1. `http://localhost:6060/go/<key>` redirects to the link mapped to the given short code
+    1. `http://localhost:6060/` shows all short code to URL mappings (opens your airtable base)
     1. `http://localhost:6060/reload` will tell the server to reload the mapping file.  do this after making changes in airtable.
 1. [add a chome search engine][chrome-search-engine-settings].  See [help docs][chrome-search-engine-docs] for more info
     1. Set name to `go`
@@ -20,7 +20,7 @@ For Chrome on Mac OS
     1. enable developer mode
     1. load unpacked
     1. select the extension folder
-1. open your browser and type `go <space>` then `<key>` and you should redirect to the url that maps to the given key
+1. open your browser and type `go <space>` then `<short code>` and you should redirect to the url that maps to the given short code
 
 
 ### Run in background & at startup (Mac OS)
@@ -31,7 +31,7 @@ For Chrome on Mac OS
 1. read [pm2 docs][pm2-docs] for more info
 
 ### Airtable setup
-1. create a [table in airtable][airtable-sample] with 1 column for key names and 1 column for urls
+1. create a [table in airtable][airtable-sample] with 1 column for short codes and 1 column for urls
 1. params for this [table][airtable-sample]
     1. `base = shrZOvefftUFNSZur`
     1. `table = links`
@@ -46,7 +46,7 @@ For Chrome on Mac OS
 
 ### Parameterized Links
 1. you can define golinks for search engines
-1. eg, suppose you define key=`g` and url=`https://www.google.com/search?q=%s`
+1. eg, suppose you define short-code=`g` and url=`https://www.google.com/search?q=%s`
 1. in your browser, when you type `g purple onions` you will navigate to `https://www.google.com/search?q=purple%20onions`
 
 
