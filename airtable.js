@@ -1,5 +1,5 @@
-const Airtable = require('airtable');
-const config = require('./airtable.config.json');
+import Airtable from 'airtable';
+import config from './airtable.config.json' assert { type: 'json' };
 const base = new Airtable({
     endpointUrl: config.endpointUrl,
     apiKey: config.apiKey,
@@ -26,4 +26,4 @@ const loadLinks = async () => new Promise(loadLinksHandler);
 
 const baseUrl = `https://airtable.com/${config.base}`;
 
-module.exports = { loadLinks, baseUrl };
+export default { loadLinks, baseUrl };

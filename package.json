@@ -2,6 +2,7 @@
     "name": "golinks",
     "version": "3.0.0",
     "description": "Simple golinks server backed by airtable base",
+    "type": "module",
     "main": "server.js",
     "scripts": {
         "start": "node server.js"
@@ -16,6 +17,8 @@
     "dependencies": {
         "airtable": "^0.11.2",
         "express": "^4.17.3",
+        "express-handlebars": "^6.0.6",
+        "jaro-winkler": "^0.2.8",
         "morgan": "^1.10.0",
         "tx2": "^1.0.5"
     }

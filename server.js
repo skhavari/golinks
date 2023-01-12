@@ -1,11 +1,17 @@
-const airtable = require('./airtable');
-const express = require('express');
-const morgan = require('morgan');
-const tx2 = require('tx2');
+import airtable from './airtable.js';
+import morgan from 'morgan';
+import tx2 from 'tx2';
+import express from 'express';
+import distance from 'jaro-winkler';
+import { engine } from 'express-handlebars';
+
 const app = express();
 
 app.use(morgan(':method :url :status :res[location] :res[content-length] - :response-time ms'));
 app.set('json spaces', 4);
+app.engine('handlebars', engine());
+app.set('view engine', 'handlebars');
+app.set('views', './views');
 
 /********************************************************************************
  *
@@ -46,6 +52,16 @@ class State {
     asEntries() {
         return [...this.golinks.entries()];
     }
+
+    scoredMatches(shortCode) {
+        let scored = [];
+        for (let key of this.golinks.keys()) {
+            let score = distance(shortCode, key);
+            scored.push({ shortCode: key, score });
+        }
+        scored.sort((a, b) => b.score - a.score);
+        return scored.slice(0, 4);
+    }
 }
 
 /********************************************************************************
@@ -60,16 +76,16 @@ app.get('/go/:shortCode', (request, response) => {
     let [shortCode, ...replace] = decodeURIComponent(request.params.shortCode.replace(/\+/g, '%20')).split(' ');
     replace = replace.map(encodeURIComponent).join('+').trim();
 
-    let redirectUrl = 'https://www.pixar.com/404';
     if (golinks.has(shortCode)) {
-        redirectUrl = golinks.get(shortCode).replace('%s', replace);
-    }
-
-    response.redirect(redirectUrl);
-    redircts.inc();
-    if (!golinks.has(shortCode)) {
+        let redirectUrl = golinks.get(shortCode).replace('%s', replace);
+        response.redirect(redirectUrl);
+    } else {
+        let scoredMatches = State.getInstance().scoredMatches(shortCode);
+        response.render('suggest', { layout: false, scoredMatches, shortCode });
         notFound.inc();
     }
+
+    redircts.inc();
 });
 
 app.get('/reload', async (_, response) => {
