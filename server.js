@@ -56,8 +56,12 @@ class State {
     scoredMatches(shortCode) {
         let scored = [];
         for (let key of this.golinks.keys()) {
+            let url = this.golinks
+                .get(key)
+                .replace(/^http[s]*:\/\//, '')
+                .replace(/^www\./, '');
             let score = distance(shortCode, key);
-            scored.push({ shortCode: key, score });
+            scored.push({ shortCode: key, score, url });
         }
         scored.sort((a, b) => b.score - a.score);
         return scored.slice(0, 4);

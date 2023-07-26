@@ -26,5 +26,19 @@
             "regexFilter": "https\\:\\/\\/www\\.google\\.com\\/search\\?q=go\\+([^&]+)\\&.*",
             "resourceTypes": ["main_frame"]
         }
+    },
+    {
+        "id": 3,
+        "priority": 1,
+        "action": {
+            "type": "redirect",
+            "redirect": {
+                "regexSubstitution": "http://localhost:6060/go/\\1"
+            }
+        },
+        "condition": {
+            "regexFilter": "https\\:\\/\\/neeva\\.com\\/search\\?q=go\\+([^&]+)\\&.*",
+            "resourceTypes": ["main_frame"]
+        }
     }
 ]

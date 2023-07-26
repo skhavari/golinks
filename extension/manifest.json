@@ -4,7 +4,7 @@
     "version": "0.0.1",
     "description": "Redirect go links to localhost:6060/go",
     "permissions": ["declarativeNetRequestWithHostAccess"],
-    "host_permissions": ["*://go/*", "https://www.google.com/search*"],
+    "host_permissions": ["*://go/*", "https://www.google.com/search*", "https://neeva.com/search*"],
     "declarative_net_request": {
         "rule_resources": [
             {
